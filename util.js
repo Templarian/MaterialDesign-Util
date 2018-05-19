@@ -25,7 +25,7 @@ exports.write = (file, data) => {
   fs.writeFileSync(file, data);
 };
 
-exports.read = (file, data) => {
+exports.read = (file) => {
   fs.readFileSync(file);
 };
 
