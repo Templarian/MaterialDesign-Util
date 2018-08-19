@@ -21,6 +21,10 @@ exports.getMeta = (withPaths) => {
   return meta;
 };
 
+exports.closePath = (path) => {
+  return path.replace(/(\d)M/g, '$1ZM');
+};
+
 exports.write = (file, data) => {
   fs.writeFileSync(file, data);
 };
