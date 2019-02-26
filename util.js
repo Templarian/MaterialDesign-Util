@@ -18,7 +18,7 @@ const getMeta = (withPaths, overridePackageName) => {
     const total = meta.length;
     meta.forEach((icon, i) => {
       const svg = fs.readFileSync(`${folder}${pName}/svg/${icon.name}.svg`, { encoding });
-      icon.path = svg.match(/d="([^"]+)"/)[1];
+      icon.path = svg.match(/ d="([^"]+)"/)[1];
     });
   }
   return meta;
