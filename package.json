@@ -1,6 +1,6 @@
 {
   "name": "@mdi/util",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Util helpers for support builds.",
   "main": "util.js",
   "scripts": {

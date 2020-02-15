@@ -45,7 +45,7 @@ exports.write = (file, data) => {
 };
 
 exports.read = (file) => {
-  fs.readFileSync(file);
+  return fs.readFileSync(file, 'utf8');
 };
 
 exports.exists = (file) => {
