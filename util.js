@@ -64,7 +64,11 @@ const getMeta = (withPaths, overridePackageName = undefined) => {
   if (withPaths) {
     const total = meta.length;
     meta.forEach((icon, i) => {
-      const svg = fs.readFileSync(`${folder}${pName}/svg/${icon.name}.svg`, { encoding });
+      let svgFile = path.resolve(svg_package, 'svg', `${icon.name}.svg`);
+      if (overridePackageName !== undefined) {
+        svgFile = path.resolve(getSVGPackagePath(overridePackageName), 'svg', `${icon.name}.svg`);
+      }
+      const svg = fs.readFileSync(svgFile, { encoding });
       icon.path = svg.match(/ d="([^"]+)"/)[1];
     });
   }
