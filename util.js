@@ -1,19 +1,34 @@
 const fs = require('fs');
+const path = require('path');
 
 const encoding = "utf8";
 const folder = `${__dirname}/../`;
 const packageName = 'svg'
+/**
+ * Read a file and return it's parsed JSON.
+ * 
+ * @param {string} filename 
+ * @param {string} overridePackageName 
+ * @returns object of the parsed json
+ */
+const readJSONtoObject = (filename, overridePackageName = undefined) => {
+  let filepath = path.resolve(svg_package, filename);
 
-const getVersion = (overridePackageName) => {
-  const pName = overridePackageName || packageName;
-  const file = fs.readFileSync(`${folder}${pName}/package.json`, { encoding });
+  if (overridePackageName !== undefined) {
+    filepath = path.resolve(getSVGPackagePath(overridePackageName), filename);
+  }
+
+  const file = fs.readFileSync(filepath, { encoding });
+  return JSON.parse(file);
+};
+
+const getVersion = (overridePackageName = undefined) => {
+  const file = readJSONtoObject("package.json", overridePackageName);
   return JSON.parse(file).version;
 };
 
-const getMeta = (withPaths, overridePackageName) => {
-  const pName = overridePackageName || packageName;
-  const file = fs.readFileSync(`${folder}${pName}/meta.json`, { encoding });
-  const meta = JSON.parse(file);
+const getMeta = (withPaths, overridePackageName = undefined) => {
+  const meta = readJSONtoObject("meta.json", overridePackageName);
   if (withPaths) {
     const total = meta.length;
     meta.forEach((icon, i) => {
