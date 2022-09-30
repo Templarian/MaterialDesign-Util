@@ -1,19 +1,19 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 /**
  * Retrieve the absolute path to the `@mdi/svg` package.
- * 
+ *
  * If using from the root of a project, it will return the `node_modules/@mdi/svg` path.
  * Otherwise, it will fallback to 0.3.2 behavior (without validating that it exists).
- * 
+ *
  * This help for pnpm in isolated mode where the 0.3.2 behavior try to find the `@mdi/svg` package
  * somewhere in the `.pnpm` store.
- * 
- * @param {string} overridePackageName 
+ *
+ * @param {string} overridePackageName
  * @returns the absolute path to the `@mdi/svg` package.
  */
- const getSVGPackagePath = (overridePackageName = undefined) => {
+const getSVGPackagePath = (overridePackageName = undefined) => {
   const pkgName = overridePackageName || "svg";
   const mdi_svg_path = path.resolve(
     process.cwd(),
@@ -33,9 +33,9 @@ const path = require('path');
 
 /**
  * Read a file and return its content.
- * 
- * @param {string} filename 
- * @param {string} overridePackageName 
+ *
+ * @param {string} filename
+ * @param {string} overridePackageName
  * @returns content of the file
  */
 const readFile = (filename, overridePackageName = undefined) => {
@@ -46,13 +46,13 @@ const readFile = (filename, overridePackageName = undefined) => {
   }
 
   return fs.readFileSync(filepath, { encoding: "utf8" });
-}
+};
 
 /**
  * Read a JSON and return an object of the parsed JSON.
- * 
- * @param {string} filename 
- * @param {string} overridePackageName 
+ *
+ * @param {string} filename
+ * @param {string} overridePackageName
  * @returns object of the parsed json
  */
 const readJSONtoObject = (filename, overridePackageName = undefined) => {
@@ -82,19 +82,19 @@ const getMeta = (withPaths, overridePackageName = undefined) => {
 };
 
 exports.getVersionLight = () => {
-  return getVersion('light-svg');
-}
+  return getVersion("light-svg");
+};
 
 exports.getMetaLight = (withPaths) => {
-  return getMeta(withPaths, 'light-svg');
-}
+  return getMeta(withPaths, "light-svg");
+};
 
 exports.getVersion = getVersion;
 
 exports.getMeta = getMeta;
 
 exports.closePath = (path) => {
-  return path.replace(/(\d)M/g, '$1ZM');
+  return path.replace(/(\d)M/g, "$1ZM");
 };
 
 exports.write = (file, data) => {
@@ -102,7 +102,7 @@ exports.write = (file, data) => {
 };
 
 exports.read = (file) => {
-  return fs.readFileSync(file, 'utf8');
+  return fs.readFileSync(file, "utf8");
 };
 
 exports.exists = (file) => {
