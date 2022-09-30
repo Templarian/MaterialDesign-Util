@@ -1,8 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-const encoding = "utf8";
-
 /**
  * Retrieve the absolute path to the `@mdi/svg` package.
  * 
@@ -34,20 +32,31 @@ const encoding = "utf8";
 };
 
 /**
- * Read a file and return it's parsed JSON.
+ * Read a file and return its content.
  * 
  * @param {string} filename 
  * @param {string} overridePackageName 
- * @returns object of the parsed json
+ * @returns content of the file
  */
-const readJSONtoObject = (filename, overridePackageName = undefined) => {
+const readFile = (filename, overridePackageName = undefined) => {
   let filepath = path.resolve(svg_package, filename);
 
   if (overridePackageName !== undefined) {
     filepath = path.resolve(getSVGPackagePath(overridePackageName), filename);
   }
 
-  const file = fs.readFileSync(filepath, { encoding });
+  return fs.readFileSync(filepath, { encoding: "utf8" });
+}
+
+/**
+ * Read a JSON and return an object of the parsed JSON.
+ * 
+ * @param {string} filename 
+ * @param {string} overridePackageName 
+ * @returns object of the parsed json
+ */
+const readJSONtoObject = (filename, overridePackageName = undefined) => {
+  const file = readFile(filename, overridePackageName);
   return JSON.parse(file);
 };
 
@@ -64,11 +73,8 @@ const getMeta = (withPaths, overridePackageName = undefined) => {
   if (withPaths) {
     const total = meta.length;
     meta.forEach((icon, i) => {
-      let svgFile = path.resolve(svg_package, 'svg', `${icon.name}.svg`);
-      if (overridePackageName !== undefined) {
-        svgFile = path.resolve(getSVGPackagePath(overridePackageName), 'svg', `${icon.name}.svg`);
-      }
-      const svg = fs.readFileSync(svgFile, { encoding });
+      let svgFilename = path.join("svg", `${icon.name}.svg`);
+      const svg = readFile(svgFilename, overridePackageName);
       icon.path = svg.match(/ d="([^"]+)"/)[1];
     });
   }
