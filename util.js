@@ -106,5 +106,5 @@ exports.read = (file) => {
 };
 
 exports.exists = (file) => {
-  return fs.exists(file);
+  return fs.existsSync(file);
 };
