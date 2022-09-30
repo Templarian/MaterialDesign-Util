@@ -2,8 +2,37 @@ const fs = require('fs');
 const path = require('path');
 
 const encoding = "utf8";
-const folder = `${__dirname}/../`;
-const packageName = 'svg'
+
+/**
+ * Retrieve the absolute path to the `@mdi/svg` package.
+ * 
+ * If using from the root of a project, it will return the `node_modules/@mdi/svg` path.
+ * Otherwise, it will fallback to 0.3.2 behavior (without validating that it exists).
+ * 
+ * This help for pnpm in isolated mode where the 0.3.2 behavior try to find the `@mdi/svg` package
+ * somewhere in the `.pnpm` store.
+ * 
+ * @param {string} overridePackageName 
+ * @returns the absolute path to the `@mdi/svg` package.
+ */
+ const getSVGPackagePath = (overridePackageName = undefined) => {
+  const pkgName = overridePackageName || "svg";
+  const mdi_svg_path = path.resolve(
+    process.cwd(),
+    "node_modules",
+    "@mdi",
+    pkgName
+  );
+
+  if (fs.existsSync(mdi_svg_path)) {
+    return path.resolve(mdi_svg_path);
+  } else {
+    // Did not find the folder of the package.
+    // Fallback to the 0.3.2 behavior.
+    return path.resolve(parent_folder, pkgName);
+  }
+};
+
 /**
  * Read a file and return it's parsed JSON.
  * 
@@ -21,6 +50,9 @@ const readJSONtoObject = (filename, overridePackageName = undefined) => {
   const file = fs.readFileSync(filepath, { encoding });
   return JSON.parse(file);
 };
+
+const parent_folder = path.resolve(`${__dirname}/../`);
+const svg_package = getSVGPackagePath();
 
 const getVersion = (overridePackageName = undefined) => {
   const file = readJSONtoObject("package.json", overridePackageName);
